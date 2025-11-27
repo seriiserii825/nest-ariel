@@ -26,7 +26,7 @@ export class TasksService {
       id,
       title,
       description,
-      status: 'OPEN',
+      status: TaskStatus.OPEN,
     };
     this.tasks.push(task);
     return task;
@@ -34,11 +34,6 @@ export class TasksService {
 
   updateTaskStatus(id: string, status: TaskStatus): Task {
     const task = this.getTaskById(id); // уже бросит ошибку, если нет
-    if (!TASK_STATUSES.includes(status)) {
-      throw new NotFoundException(
-        `Status "${status}" is invalid, use one of: ${TASK_STATUSES.join(', ')}`,
-      );
-    }
     task.status = status;
     return task;
   }
