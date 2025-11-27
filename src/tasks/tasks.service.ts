@@ -32,6 +32,15 @@ export class TasksService {
     return task;
   }
 
+  updateTaskStatus(id: string, status: TaskStatus): Task {
+    const task = this.getTaskById(id); // уже бросит ошибку, если нет
+    if (!Object.values(TaskStatus).includes(status)) {
+      throw new NotFoundException(`Status "${status}" is invalid, use OPEN, IN_PROGRESS, DONE`);
+    }
+    task.status = status;
+    return task;
+  }
+
   deleteTask(id: string): void {
     const task = this.getTaskById(id); // уже бросит ошибку, если нет
     this.tasks = this.tasks.filter((taskItem) => taskItem.id !== task.id);
