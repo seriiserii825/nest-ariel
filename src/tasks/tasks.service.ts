@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Task, TaskStatus } from './tasks.model';
+import { Task, TASK_STATUSES, TaskStatus } from './tasks.model';
 
 import { v4 as uuidv4 } from 'uuid';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -26,7 +26,7 @@ export class TasksService {
       id,
       title,
       description,
-      status: TaskStatus.OPEN,
+      status: 'OPEN',
     };
     this.tasks.push(task);
     return task;
@@ -34,8 +34,10 @@ export class TasksService {
 
   updateTaskStatus(id: string, status: TaskStatus): Task {
     const task = this.getTaskById(id); // уже бросит ошибку, если нет
-    if (!Object.values(TaskStatus).includes(status)) {
-      throw new NotFoundException(`Status "${status}" is invalid, use OPEN, IN_PROGRESS, DONE`);
+    if (!TASK_STATUSES.includes(status)) {
+      throw new NotFoundException(
+        `Status "${status}" is invalid, use one of: ${TASK_STATUSES.join(', ')}`,
+      );
     }
     task.status = status;
     return task;

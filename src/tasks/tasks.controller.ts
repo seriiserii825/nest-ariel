@@ -30,12 +30,12 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto);
   }
 
-  @Patch('/:id/:status/status')
+  @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
-    @Param('status') status: string,
+    @Body() status: Record<'status', TaskStatus>,
   ): Task {
-    return this.tasksService.updateTaskStatus(id, status as TaskStatus);
+    return this.tasksService.updateTaskStatus(id, status.status);
   }
 
   @Delete('/:id')
