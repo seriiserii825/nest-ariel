@@ -9,12 +9,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
+import TaskEntity from './task.entity';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
- // @Get()
+  // @Get()
   // getAllTasks(@Query() filter_dto: FilterTaskDto): Task[] {
   //   if (Object.keys(filter_dto).length) {
   //     return this.tasksService.filterTasks(filter_dto);
@@ -22,10 +23,10 @@ export class TasksController {
   //   return this.tasksService.getAllTasks();
   // }
   //
-  // @Get('/:id')
-  // getTaskById(@Param('id') id: string): Task {
-  //   return this.tasksService.getTaskById(id);
-  // }
+  @Get('/:id')
+  async getTaskById(@Param('id') id: number): Promise<TaskEntity> {
+    return await this.tasksService.getTaskById(id);
+  }
   //
   // @Post()
   // createTask(@Body() createTaskDto: CreateTaskDto): Task {
