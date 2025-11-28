@@ -55,6 +55,7 @@ export class TasksService {
   updateTaskStatus(id: string, status: TaskStatus): Task {
     const task = this.getTaskById(id); // уже бросит ошибку, если нет
     task.status = status;
+    console.log(task, 'task');
     return task;
   }
 
