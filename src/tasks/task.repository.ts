@@ -6,6 +6,10 @@ import { TaskStatus } from './task-status.enum';
 
 @Injectable()
 export class TaskRepository extends Repository<TaskEntity> {
+  constructor(private dataSource: DataSource) {
+    super(TaskEntity, dataSource.createEntityManager());
+  }
+
   async createTask(createTaskDto: CreateTaskDto): Promise<TaskEntity> {
     const task = new TaskEntity();
     task.title = createTaskDto.title;
