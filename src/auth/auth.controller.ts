@@ -12,6 +12,13 @@ export class AuthController {
     return this.authService.signUp(authCredentialsDto);
   }
 
+  @Post('/signin')
+  async signIn(
+    @Body() authCredentialsDto: AuthCredentialsDto,
+  ): Promise<string | null> {
+    return this.authService.signIn(authCredentialsDto);
+  }
+
   @Get('/users')
   async getAllUsers(): Promise<UserEntity[]> {
     return this.authService.getAllUsers();

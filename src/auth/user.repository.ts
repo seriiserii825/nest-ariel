@@ -1,6 +1,10 @@
 import { DataSource, Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -24,6 +28,18 @@ export class UserRepository extends Repository<UserEntity> {
         throw new ConflictException('Username already exists');
       }
       throw new InternalServerErrorException();
+    }
+  }
+
+  async validateUserPassword(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<string | null> {
+    const { username, password } = authCredentialsDto;
+    const user = await this.findOne({ where: { username } });
+    if (user && await user.validatePassword(password)) {
+      return user.username;
+    } else {
+      return null;
     }
   }
 
