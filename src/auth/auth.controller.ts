@@ -6,11 +6,15 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
 import { UserEntity } from './user.entity';
 import { ISignInResponse } from './interfaces/sign-in-response.interface';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from './get-user-decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -36,5 +40,11 @@ export class AuthController {
   @Delete('/user/:id')
   async deleteUser(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.authService.deleteUser(id);
+  }
+
+  @Post('/test')
+  @UseGuards(AuthGuard())
+  async test(@GetUser() user: UserEntity): Promise<UserEntity> {
+    return user;
   }
 }
