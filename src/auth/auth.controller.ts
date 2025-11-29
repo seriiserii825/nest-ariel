@@ -1,7 +1,16 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { AuthService } from './auth.service';
 import { UserEntity } from './user.entity';
+import { ISignInResponse } from './interfaces/sign-in-response.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -15,7 +24,7 @@ export class AuthController {
   @Post('/signin')
   async signIn(
     @Body() authCredentialsDto: AuthCredentialsDto,
-  ): Promise<string | null> {
+  ): Promise<ISignInResponse | null> {
     return this.authService.signIn(authCredentialsDto);
   }
 
