@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { TaskEntity } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskStatus } from './task-status.enum';
@@ -15,7 +15,13 @@ export class TaskRepository extends Repository<TaskEntity> {
     task.title = createTaskDto.title;
     task.description = createTaskDto.description;
     task.status = TaskStatus.OPEN;
-    await task.save();
+    try {
+      await task.save();
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new ConflictException('Task with this title already exists');
+      }
+    }
     return task;
   }
 }
