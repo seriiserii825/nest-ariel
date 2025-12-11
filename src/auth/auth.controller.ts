@@ -22,6 +22,7 @@ export class AuthController {
 
   @Post('/signup')
   async signUp(@Body() authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    console.log('Received signup request:', authCredentialsDto);
     return this.authService.signUp(authCredentialsDto);
   }
 
